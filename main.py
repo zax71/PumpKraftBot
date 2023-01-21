@@ -1,6 +1,6 @@
 """
 PumpKraftBot by Zax71
-Github: https://github.com/zax71/PunpKraftBot
+Github: https://github.com/zax71/PumpKraftBot
 """
 
 import discord, termcolor, yaml
