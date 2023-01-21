@@ -1,8 +1,10 @@
 """
 PumpKraftBot by Zax71
-Github: https://github.com/zax71/endercube-bot
+Github: https://github.com/zax71/PunpKraftBot
 """
+
 import discord, termcolor, yaml
+from cogs.roleMenu import RoleButtonsView
 
 def loadConfig():
     configFile = ""
@@ -12,24 +14,33 @@ def loadConfig():
     
     return configFile
 
-def main():
-    config = loadConfig()
 
-    # Create bot object
-    bot = discord.Bot()
+config = loadConfig()
 
-    @bot.event
-    async def on_ready():
-        termcolor.cprint(f"Bot started. Successfully logged in as {bot.user}", "green", attrs=["bold"])
+# Create intents object
 
-    @bot.slash_command(guild_ids=[config["guild_ID"]], description="Pong... Hopefully")
-    async def ping(ctx):
-        await ctx.respond("Pong")
+intents = discord.Intents.default()
+intents.guilds = True
 
-    # Load cogs
-    bot.load_extension("cogs.moderation")
+# Create bot object
 
-    bot.run(config["bot_token"])
+bot = discord.Bot(intents=intents)
 
-if __name__ == "__main__":
-    main()
+
+
+""" Events """
+@bot.event
+async def on_ready():
+    termcolor.cprint(f"Bot started. Successfully logged in as {bot.user}", "green", attrs=["bold"])
+    bot.add_view(RoleButtonsView())
+
+@bot.slash_command(guild_ids=[config["guild_ID"]], description="Pong... Hopefully")
+async def ping(ctx):
+    await ctx.respond("Pong")
+
+
+
+# Load cogs
+bot.load_extension("cogs.roleMenu")
+
+bot.run(config["bot_token"])
